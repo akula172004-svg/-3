@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Нумерологический проводник</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Космический фон: звёзды, планеты, знаки зодиака -->
+  <div class="cosmos" aria-hidden="true">
+    <div class="stars stars--far"></div>
+    <div class="stars stars--near"></div>
+
+    <!-- Планеты — декоративные элементы -->
+    <div class="planet planet--1"></div>
+    <div class="planet planet--2"></div>
+    <div class="planet planet--3"></div>
+
+    <!-- Орбита со знаками зодиака -->
+    <div class="zodiac-orbit">
+      <div class="zodiac-ring">
+        <span class="zodiac-sign">♈</span>
+        <span class="zodiac-sign">♉</span>
+        <span class="zodiac-sign">♊</span>
+        <span class="zodiac-sign">♋</span>
+        <span class="zodiac-sign">♌</span>
+        <span class="zodiac-sign">♍</span>
+        <span class="zodiac-sign">♎</span>
+        <span class="zodiac-sign">♏</span>
+        <span class="zodiac-sign">♐</span>
+        <span class="zodiac-sign">♑</span>
+        <span class="zodiac-sign">♒</span>
+        <span class="zodiac-sign">♓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Основной контент -->
+  <main class="page">
+    <header class="hero">
+      <p class="hero__badge">✦ нумерология ✦</p>
+      <h1 class="hero__title">Нумерологический проводник</h1>
+      <p class="hero__subtitle">
+        Введите дату рождения и получите небольшую подсказку о себе через числа
+      </p>
+    </header>
+
+    <!-- Форма ввода даты -->
+    <section class="card card--form" id="form-section">
+      <form class="birth-form" id="birth-form" novalidate>
+        <label class="birth-form__label" for="birth-date">
+          Дата рождения
+        </label>
+        <input
+          class="birth-form__input"
+          type="date"
+          id="birth-date"
+          name="birth-date"
+          required
+          max=""
+        >
+        <p class="birth-form__hint" id="form-hint" role="alert" hidden></p>
+        <button class="birth-form__button" type="submit">
+          Рассчитать
+        </button>
+      </form>
+    </section>
+
+    <!-- Блок результата (скрыт до расчёта) -->
+    <section class="card card--result" id="result-section" hidden>
+      <div class="result">
+        <p class="result__label">Ваше число жизненного пути</p>
+        <div class="result__number" id="life-path-number" aria-live="polite">—</div>
+        <h2 class="result__title" id="life-path-title"></h2>
+        <p class="result__description" id="life-path-description"></p>
+        <div class="result__tip">
+          <span class="result__tip-label">Подсказка</span>
+          <p class="result__tip-text" id="life-path-tip"></p>
+        </div>
+        <button class="result__reset" type="button" id="reset-button">
+          Рассчитать снова
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Прототип для тестирования идеи · больше расчётов — в будущих версиях</p>
+  </footer>
+
+  <!-- Скрипты: сначала данные, потом логика, потом интерфейс -->
+  <script src="js/data/lifePathData.js"></script>
+  <script src="js/numerology.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
