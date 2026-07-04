@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Нумерологический проводник</title>
+  <title>Нумерологический проводник — онлайн-калькулятор</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- Космический фон: звёзды, планеты, знаки зодиака -->
+  <!-- ===== КОСМИЧЕСКИЙ ФОН ===== -->
   <div class="cosmos" aria-hidden="true">
     <div class="stars stars--far"></div>
     <div class="stars stars--near"></div>
+    <div class="stars stars--dust"></div>
 
-    <!-- Планеты — декоративные элементы -->
     <div class="planet planet--1"></div>
     <div class="planet planet--2"></div>
     <div class="planet planet--3"></div>
+    <div class="planet planet--4"></div>
 
-    <!-- Орбита со знаками зодиака -->
     <div class="zodiac-orbit">
       <div class="zodiac-ring">
         <span class="zodiac-sign">♈</span>
@@ -37,61 +37,220 @@
     </div>
   </div>
 
-  <!-- Основной контент -->
+  <!-- ===== НАВИГАЦИЯ ===== -->
+  <nav class="nav" aria-label="Разделы сайта">
+    <a class="nav__link" href="#hero">Главная</a>
+    <a class="nav__link" href="#calculator">Расчёт</a>
+    <a class="nav__link" href="#compatibility">Совместимость</a>
+    <a class="nav__link" href="#numbers">Числа</a>
+    <a class="nav__link" href="#how-it-works">Как это работает</a>
+  </nav>
+
   <main class="page">
-    <header class="hero">
-      <p class="hero__badge">✦ нумерология ✦</p>
+
+    <!-- ===== 1. ГЛАВНЫЙ ЭКРАН ===== -->
+    <header class="hero section" id="hero">
+      <p class="hero__badge">✦ онлайн-нумеролог ✦</p>
       <h1 class="hero__title">Нумерологический проводник</h1>
       <p class="hero__subtitle">
-        Введите дату рождения и получите небольшую подсказку о себе через числа
+        Узнайте свои числа по дате рождения, постройте личную карту
+        и проверьте совместимость с близким человеком
       </p>
+      <a class="hero__cta" href="#calculator">Начать расчёт</a>
     </header>
 
-    <!-- Форма ввода даты -->
-    <section class="card card--form" id="form-section">
-      <form class="birth-form" id="birth-form" novalidate>
-        <label class="birth-form__label" for="birth-date">
-          Дата рождения
-        </label>
-        <input
-          class="birth-form__input"
-          type="date"
-          id="birth-date"
-          name="birth-date"
-          required
-          max=""
-        >
-        <p class="birth-form__hint" id="form-hint" role="alert" hidden></p>
-        <button class="birth-form__button" type="submit">
-          Рассчитать
-        </button>
-      </form>
+    <!-- ===== 2. РАСЧЁТ ПО ДАТЕ РОЖДЕНИЯ ===== -->
+    <section class="section" id="calculator">
+      <div class="section__header">
+        <h2 class="section__title">Расчёт по дате рождения</h2>
+        <p class="section__subtitle">
+          Введите дату — калькулятор рассчитает пять основных чисел
+        </p>
+      </div>
+
+      <div class="card">
+        <form class="form" id="birth-form" novalidate>
+          <label class="form__label" for="birth-date">Дата рождения</label>
+          <input
+            class="form__input"
+            type="date"
+            id="birth-date"
+            name="birth-date"
+            required
+            max=""
+          >
+          <p class="form__hint" id="form-hint" role="alert" hidden></p>
+          <button class="form__button" type="submit">Рассчитать</button>
+        </form>
+      </div>
     </section>
 
-    <!-- Блок результата (скрыт до расчёта) -->
-    <section class="card card--result" id="result-section" hidden>
-      <div class="result">
-        <p class="result__label">Ваше число жизненного пути</p>
-        <div class="result__number" id="life-path-number" aria-live="polite">—</div>
-        <h2 class="result__title" id="life-path-title"></h2>
-        <p class="result__description" id="life-path-description"></p>
-        <div class="result__tip">
-          <span class="result__tip-label">Подсказка</span>
-          <p class="result__tip-text" id="life-path-tip"></p>
+    <!-- ===== 3. ЛИЧНАЯ НУМЕРОЛОГИЧЕСКАЯ КАРТА ===== -->
+    <section class="section" id="personal-card" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Ваша нумерологическая карта</h2>
+        <p class="section__subtitle" id="card-date-label"></p>
+      </div>
+
+      <div class="card card--profile">
+        <!-- Главное число — жизненный путь -->
+        <div class="profile-hero">
+          <p class="profile-hero__label">Число жизненного пути</p>
+          <div class="profile-hero__number" id="card-life-path">—</div>
+          <h3 class="profile-hero__title" id="card-life-path-title"></h3>
+          <p class="profile-hero__text" id="card-life-path-desc"></p>
         </div>
-        <button class="result__reset" type="button" id="reset-button">
-          Рассчитать снова
+
+        <!-- Сетка остальных чисел -->
+        <div class="profile-grid" id="profile-grid">
+          <!-- Заполняется из JavaScript -->
+        </div>
+
+        <div class="profile-tip">
+          <span class="profile-tip__label">Подсказка дня</span>
+          <p class="profile-tip__text" id="card-tip"></p>
+        </div>
+
+        <button class="form__button form__button--ghost" type="button" id="reset-button">
+          Новый расчёт
         </button>
       </div>
     </section>
+
+    <!-- ===== 4. СОВМЕСТИМОСТЬ ===== -->
+    <section class="section" id="compatibility">
+      <div class="section__header">
+        <h2 class="section__title">Совместимость</h2>
+        <p class="section__subtitle">
+          Введите две даты рождения и узнайте, насколько гармоничны ваши энергии
+        </p>
+      </div>
+
+      <div class="card">
+        <form class="form" id="compat-form" novalidate>
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label" for="compat-date-1">Дата первого человека</label>
+              <input class="form__input" type="date" id="compat-date-1" required max="">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="compat-date-2">Дата второго человека</label>
+              <input class="form__input" type="date" id="compat-date-2" required max="">
+            </div>
+          </div>
+          <p class="form__hint" id="compat-hint" role="alert" hidden></p>
+          <button class="form__button" type="submit">Проверить совместимость</button>
+        </form>
+
+        <!-- Результат совместимости -->
+        <div class="compat-result" id="compat-result" hidden>
+          <div class="compat-result__header">
+            <div class="compat-person">
+              <span class="compat-person__number" id="compat-num-1">—</span>
+              <span class="compat-person__label" id="compat-label-1"></span>
+            </div>
+            <div class="compat-percent">
+              <div class="compat-percent__circle" id="compat-circle">
+                <span class="compat-percent__value" id="compat-percent">0%</span>
+              </div>
+              <span class="compat-percent__level" id="compat-level"></span>
+            </div>
+            <div class="compat-person">
+              <span class="compat-person__number" id="compat-num-2">—</span>
+              <span class="compat-person__label" id="compat-label-2"></span>
+            </div>
+          </div>
+
+          <div class="compat-details">
+            <div class="compat-details__block compat-details__block--plus">
+              <h4 class="compat-details__heading">Сильные стороны пары</h4>
+              <p id="compat-strengths"></p>
+            </div>
+            <div class="compat-details__block compat-details__block--minus">
+              <h4 class="compat-details__heading">Возможные сложности</h4>
+              <p id="compat-challenges"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 5. ОПИСАНИЕ ЧИСЕЛ ===== -->
+    <section class="section" id="numbers">
+      <div class="section__header">
+        <h2 class="section__title">Значение чисел</h2>
+        <p class="section__subtitle">
+          Справочник чисел от 1 до 9 и мастер-чисел 11, 22, 33
+        </p>
+      </div>
+
+      <div class="numbers-grid" id="numbers-grid">
+        <!-- Карточки чисел заполняются из JavaScript -->
+      </div>
+    </section>
+
+    <!-- ===== 6. КАК ЭТО РАБОТАЕТ ===== -->
+    <section class="section" id="how-it-works">
+      <div class="section__header">
+        <h2 class="section__title">Как это работает</h2>
+        <p class="section__subtitle">Простая логика за космическим фасадом</p>
+      </div>
+
+      <div class="card">
+        <ol class="steps">
+          <li class="steps__item">
+            <span class="steps__number">1</span>
+            <div>
+              <h3 class="steps__title">Введите дату рождения</h3>
+              <p class="steps__text">
+                Калькулятор берёт день, месяц и год и складывает их цифры
+                по разным формулам для каждого числа.
+              </p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__number">2</span>
+            <div>
+              <h3 class="steps__title">Получите личную карту</h3>
+              <p class="steps__text">
+                Вы увидите пять чисел: жизненного пути, души, судьбы, личности
+                и дня рождения — с короткими описаниями.
+              </p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__number">3</span>
+            <div>
+              <h3 class="steps__title">Мастер-числа 11, 22, 33</h3>
+              <p class="steps__text">
+                Если при сложении получается 11, 22 или 33 — мы не сокращаем
+                их дальше. Это особые числа с усиленной энергией.
+              </p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__number">4</span>
+            <div>
+              <h3 class="steps__title">Проверьте совместимость</h3>
+              <p class="steps__text">
+                Сравниваем числа жизненного пути двух людей и показываем
+                процент гармонии, сильные стороны и возможные сложности.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
   </main>
 
   <footer class="footer">
-    <p>Прототип для тестирования идеи · больше расчётов — в будущих версиях</p>
+    <p>Нумерологический проводник · онлайн-калькулятор для самопознания</p>
   </footer>
 
-  <!-- Скрипты: сначала данные, потом логика, потом интерфейс -->
-  <script src="js/data/lifePathData.js"></script>
+  <!-- Данные → логика → интерфейс -->
+  <script src="js/data/numberDescriptions.js"></script>
+  <script src="js/data/compatibilityData.js"></script>
   <script src="js/numerology.js"></script>
   <script src="js/main.js"></script>
 </body>

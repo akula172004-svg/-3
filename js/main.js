@@ -1,121 +1,297 @@
 /**
  * main.js
  * -------
- * Связывает интерфейс (HTML) с логикой расчётов (numerology.js).
+ * Управляет интерфейсом всех разделов страницы.
  *
- * Здесь только работа с DOM и событиями.
- * Все формулы — в numerology.js, все тексты — в lifePathData.js.
+ * Разделы:
+ *   1. Расчёт по дате рождения → личная карта
+ *   2. Совместимость по двум датам
+ *   3. Справочник чисел (заполняется при загрузке)
+ *
+ * Логика расчётов — в numerology.js
+ * Тексты чисел — в numberDescriptions.js
  */
 
 (function () {
   "use strict";
 
-  // --- Элементы страницы ---
-  var form = document.getElementById("birth-form");
-  var dateInput = document.getElementById("birth-date");
+  /* ==========================================================
+     ЭЛЕМЕНТЫ DOM
+     ========================================================== */
+
+  /* Форма расчёта */
+  var birthForm = document.getElementById("birth-form");
+  var birthDateInput = document.getElementById("birth-date");
   var formHint = document.getElementById("form-hint");
-  var formSection = document.getElementById("form-section");
-  var resultSection = document.getElementById("result-section");
+  var personalCardSection = document.getElementById("personal-card");
   var resetButton = document.getElementById("reset-button");
 
-  // Элементы результата
-  var numberEl = document.getElementById("life-path-number");
-  var titleEl = document.getElementById("life-path-title");
-  var descriptionEl = document.getElementById("life-path-description");
-  var tipEl = document.getElementById("life-path-tip");
+  /* Личная карта */
+  var cardDateLabel = document.getElementById("card-date-label");
+  var cardLifePath = document.getElementById("card-life-path");
+  var cardLifePathTitle = document.getElementById("card-life-path-title");
+  var cardLifePathDesc = document.getElementById("card-life-path-desc");
+  var cardTip = document.getElementById("card-tip");
+  var profileGrid = document.getElementById("profile-grid");
+
+  /* Совместимость */
+  var compatForm = document.getElementById("compat-form");
+  var compatDate1 = document.getElementById("compat-date-1");
+  var compatDate2 = document.getElementById("compat-date-2");
+  var compatHint = document.getElementById("compat-hint");
+  var compatResult = document.getElementById("compat-result");
+  var compatCircle = document.getElementById("compat-circle");
+  var compatPercent = document.getElementById("compat-percent");
+  var compatLevel = document.getElementById("compat-level");
+  var compatNum1 = document.getElementById("compat-num-1");
+  var compatNum2 = document.getElementById("compat-num-2");
+  var compatLabel1 = document.getElementById("compat-label-1");
+  var compatLabel2 = document.getElementById("compat-label-2");
+  var compatStrengths = document.getElementById("compat-strengths");
+  var compatChallenges = document.getElementById("compat-challenges");
+
+  /* Справочник чисел */
+  var numbersGrid = document.getElementById("numbers-grid");
+
+  /* Ключи чисел для сетки карты (кроме lifePath — он в шапке) */
+  var PROFILE_KEYS = ["soul", "destiny", "personality", "birthday"];
+
+  /* ==========================================================
+     ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+     ========================================================== */
 
   /**
-   * Устанавливает максимальную дату — сегодня (нельзя выбрать будущее).
+   * Устанавливает max="" для всех полей даты (нельзя выбрать будущее).
    */
-  function setMaxDate() {
+  function setMaxDates() {
     var today = new Date();
-    var year = today.getFullYear();
-    var month = String(today.getMonth() + 1).padStart(2, "0");
-    var day = String(today.getDate()).padStart(2, "0");
-    dateInput.max = year + "-" + month + "-" + day;
+    var maxDate =
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0");
+
+    birthDateInput.max = maxDate;
+    compatDate1.max = maxDate;
+    compatDate2.max = maxDate;
   }
 
   /**
-   * Показывает сообщение об ошибке под полем ввода.
+   * Форматирует дату для отображения: 15.03.1990
    */
-  function showError(message) {
-    formHint.textContent = message;
-    formHint.hidden = false;
+  function formatDate(birth) {
+    return (
+      String(birth.day).padStart(2, "0") +
+      "." +
+      String(birth.month).padStart(2, "0") +
+      "." +
+      birth.year
+    );
   }
 
   /**
-   * Скрывает сообщение об ошибке.
+   * Показывает / скрывает подсказку об ошибке.
    */
-  function hideError() {
-    formHint.hidden = true;
-    formHint.textContent = "";
+  function showHint(element, message) {
+    element.textContent = message;
+    element.hidden = false;
+  }
+
+  function hideHint(element) {
+    element.hidden = true;
+    element.textContent = "";
+  }
+
+  /* ==========================================================
+     ЛИЧНАЯ КАРТА
+     ========================================================== */
+
+  /**
+   * Создаёт ячейку сетки для одного числа.
+   */
+  function createProfileCell(key, value) {
+    var label = NUMBER_TYPE_LABELS[key] || key;
+    var desc = Numerology.getNumberDescription(value);
+    var title = desc ? desc.title : "";
+
+    var cell = document.createElement("div");
+    cell.className = "profile-cell";
+    cell.innerHTML =
+      '<span class="profile-cell__label">' + label + "</span>" +
+      '<span class="profile-cell__number">' + value + "</span>" +
+      '<span class="profile-cell__title">' + title + "</span>";
+
+    return cell;
   }
 
   /**
-   * Заполняет блок результата данными.
+   * Заполняет и показывает личную нумерологическую карту.
    */
-  function displayResult(lifePathNumber, description) {
-    numberEl.textContent = lifePathNumber;
-    titleEl.textContent = description.title;
-    descriptionEl.textContent = description.description;
-    tipEl.textContent = description.tip;
+  function displayPersonalCard(profile) {
+    var lifePathDesc = Numerology.getNumberDescription(profile.lifePath);
 
-    // Показываем результат, скрываем форму
-    formSection.hidden = true;
-    resultSection.hidden = false;
+    cardDateLabel.textContent = "Дата рождения: " + formatDate(profile.birthDate);
 
-    // Плавно прокручиваем к результату на мобильных
-    resultSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    cardLifePath.textContent = profile.lifePath;
+    cardLifePath.className = "profile-hero__number";
+    if (Numerology.isMasterNumber(profile.lifePath)) {
+      cardLifePath.classList.add("profile-hero__number--master");
+    }
+
+    if (lifePathDesc) {
+      cardLifePathTitle.textContent = lifePathDesc.title;
+      cardLifePathDesc.textContent = lifePathDesc.description;
+      cardTip.textContent = lifePathDesc.tip;
+    }
+
+    /* Заполняем сетку остальных чисел */
+    profileGrid.innerHTML = "";
+    PROFILE_KEYS.forEach(function (key) {
+      profileGrid.appendChild(createProfileCell(key, profile[key]));
+    });
+
+    personalCardSection.hidden = false;
+    personalCardSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   /**
-   * Возвращает пользователя к форме ввода.
+   * Скрывает карту и возвращает к форме.
    */
-  function resetForm() {
-    resultSection.hidden = true;
-    formSection.hidden = false;
-    hideError();
-    dateInput.focus();
+  function resetPersonalCard() {
+    personalCardSection.hidden = true;
+    hideHint(formHint);
+    birthDateInput.focus();
+    document.getElementById("calculator").scrollIntoView({ behavior: "smooth" });
   }
 
   /**
-   * Обработчик отправки формы.
+   * Обработчик формы расчёта.
    */
-  function handleSubmit(event) {
+  function handleBirthSubmit(event) {
     event.preventDefault();
-    hideError();
+    hideHint(formHint);
 
-    var dateValue = dateInput.value;
+    var dateValue = birthDateInput.value;
 
     if (!dateValue) {
-      showError("Пожалуйста, введите дату рождения.");
-      dateInput.focus();
+      showHint(formHint, "Пожалуйста, введите дату рождения.");
+      birthDateInput.focus();
       return;
     }
 
-    // Расчёт через модуль Numerology
-    var result = Numerology.calculateLifePath(dateValue);
+    var profile = Numerology.calculateProfile(dateValue);
 
-    if (!result) {
-      showError("Не удалось обработать дату. Проверьте правильность ввода.");
+    if (!profile) {
+      showHint(formHint, "Не удалось обработать дату. Проверьте правильность ввода.");
       return;
     }
 
-    var description = Numerology.getLifePathDescription(result.lifePathNumber);
-
-    if (!description) {
-      showError("Описание для этого числа пока не найдено.");
-      return;
-    }
-
-    displayResult(result.lifePathNumber, description);
+    displayPersonalCard(profile);
   }
 
-  // --- Инициализация ---
-  setMaxDate();
-  form.addEventListener("submit", handleSubmit);
-  resetButton.addEventListener("click", resetForm);
+  /* ==========================================================
+     СОВМЕСТИМОСТЬ
+     ========================================================== */
 
-  // Скрываем ошибку при новом вводе
-  dateInput.addEventListener("input", hideError);
+  /**
+   * Показывает результат совместимости.
+   */
+  function displayCompatibility(result) {
+    compatNum1.textContent = result.person1.lifePath;
+    compatNum2.textContent = result.person2.lifePath;
+    compatLabel1.textContent = result.person1.title;
+    compatLabel2.textContent = result.person2.title;
+
+    compatPercent.textContent = result.percent + "%";
+    compatCircle.style.setProperty("--percent", result.percent);
+    compatLevel.textContent = result.level ? result.level.label : "";
+
+    compatStrengths.textContent = result.strengths;
+    compatChallenges.textContent = result.challenges;
+
+    compatResult.hidden = false;
+    compatResult.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  /**
+   * Обработчик формы совместимости.
+   */
+  function handleCompatSubmit(event) {
+    event.preventDefault();
+    hideHint(compatHint);
+
+    var date1 = compatDate1.value;
+    var date2 = compatDate2.value;
+
+    if (!date1 || !date2) {
+      showHint(compatHint, "Введите обе даты рождения.");
+      return;
+    }
+
+    var result = Numerology.calculateCompatibility(date1, date2);
+
+    if (!result) {
+      showHint(compatHint, "Не удалось обработать даты. Проверьте правильность ввода.");
+      return;
+    }
+
+    displayCompatibility(result);
+  }
+
+  /* ==========================================================
+     СПРАВОЧНИК ЧИСЕЛ
+     ========================================================== */
+
+  /**
+   * Создаёт карточку числа для справочника.
+   */
+  function createNumberCard(number, data) {
+    var isMaster = Numerology.isMasterNumber(number);
+    var card = document.createElement("article");
+    card.className = "number-card" + (isMaster ? " number-card--master" : "");
+
+    var badgeHtml = isMaster
+      ? '<span class="number-card__badge">мастер-число</span>'
+      : "";
+
+    card.innerHTML =
+      '<div class="number-card__digit">' + number + "</div>" +
+      badgeHtml +
+      '<h3 class="number-card__title">' + data.title + "</h3>" +
+      '<p class="number-card__text">' + data.description + "</p>";
+
+    return card;
+  }
+
+  /**
+   * Заполняет справочник чисел при загрузке страницы.
+   */
+  function renderNumbersReference() {
+    if (typeof NUMBER_DESCRIPTIONS === "undefined") return;
+
+    /* Порядок: 1–9, затем мастер-числа */
+    var order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+
+    order.forEach(function (num) {
+      if (NUMBER_DESCRIPTIONS[num]) {
+        numbersGrid.appendChild(createNumberCard(num, NUMBER_DESCRIPTIONS[num]));
+      }
+    });
+  }
+
+  /* ==========================================================
+     ИНИЦИАЛИЗАЦИЯ
+     ========================================================== */
+
+  setMaxDates();
+  renderNumbersReference();
+
+  birthForm.addEventListener("submit", handleBirthSubmit);
+  resetButton.addEventListener("click", resetPersonalCard);
+  compatForm.addEventListener("submit", handleCompatSubmit);
+
+  birthDateInput.addEventListener("input", function () { hideHint(formHint); });
+  compatDate1.addEventListener("input", function () { hideHint(compatHint); });
+  compatDate2.addEventListener("input", function () { hideHint(compatHint); });
 })();
