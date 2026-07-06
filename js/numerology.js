@@ -118,6 +118,61 @@ const Numerology = (function () {
   }
 
   /**
+   * Возвращает текст для аудитории (женщина / мужчина / подросток / ребёнок).
+   */
+  function getAudienceText(audience, number) {
+    if (typeof AUDIENCE_TEXTS !== "undefined" && AUDIENCE_TEXTS[audience]) {
+      return AUDIENCE_TEXTS[audience][number] || null;
+    }
+    return null;
+  }
+
+  /**
+   * Число сегодняшнего дня — сумма всех цифр текущей даты.
+   */
+  function calculateUniversalDay(date) {
+    var d = date || new Date();
+    var str =
+      String(d.getDate()).padStart(2, "0") +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      String(d.getFullYear());
+    return sumDigitsString(str);
+  }
+
+  /**
+   * Личное число дня = жизненный путь + число сегодняшнего дня.
+   */
+  function calculatePersonalDay(lifePath, date) {
+    var universal = calculateUniversalDay(date);
+    return reduceWithMasters(lifePath + universal);
+  }
+
+  /**
+   * «Послание дня» — выбирается по числу сегодняшней даты.
+   */
+  function getDailyMessage(date) {
+    if (typeof DAILY_MESSAGES === "undefined") return "";
+
+    var d = date || new Date();
+    var index = (d.getDate() + d.getMonth() + d.getFullYear()) % DAILY_MESSAGES.length;
+    return DAILY_MESSAGES[index];
+  }
+
+  /**
+   * Прогноз на сегодня по личному числу дня.
+   */
+  function getDailyForecast(lifePath, date) {
+    if (typeof DAILY_FORECAST === "undefined") return null;
+
+    var personalDay = calculatePersonalDay(lifePath, date);
+    return {
+      personalDay: personalDay,
+      universalDay: calculateUniversalDay(date),
+      forecast: DAILY_FORECAST[personalDay] || DAILY_FORECAST[reduceWithMasters(personalDay)],
+    };
+  }
+
+  /**
    * Проверяет гармоничность пары чисел жизненного пути.
    */
   function isHarmoniousPair(n1, n2) {
@@ -203,6 +258,11 @@ const Numerology = (function () {
     calculateProfile: calculateProfile,
     calculateCompatibility: calculateCompatibility,
     getNumberDescription: getNumberDescription,
+    getAudienceText: getAudienceText,
+    calculateUniversalDay: calculateUniversalDay,
+    calculatePersonalDay: calculatePersonalDay,
+    getDailyMessage: getDailyMessage,
+    getDailyForecast: getDailyForecast,
     reduceWithMasters: reduceWithMasters,
     sumDigits: sumDigits,
     isMasterNumber: isMasterNumber,

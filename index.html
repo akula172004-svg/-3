@@ -3,138 +3,784 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Нумерологический проводник — онлайн-калькулятор</title>
+  <title>Тайна чисел — виртуальный нумеролог</title>
+
+  <!-- Загадочный шрифт для заголовков + читаемый для текста -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/cosmos.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/atmosphere.css">
+  <link rel="stylesheet" href="css/section-atmosphere.css">
 </head>
 <body>
 
-  <!-- ===== КОСМИЧЕСКИЙ ФОН ===== -->
+  <!-- SVG-спрайт скрыт без display:none — иначе <use> не рисуется в части браузеров -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <linearGradient id="zg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fff8d8"/>
+        <stop offset="45%" stop-color="#f5d878"/>
+        <stop offset="100%" stop-color="#a07020"/>
+      </linearGradient>
+      <linearGradient id="zg-fill" x1="20%" y1="0%" x2="80%" y2="100%">
+        <stop offset="0%" stop-color="#fff8d8" stop-opacity="0.9"/>
+        <stop offset="50%" stop-color="#f5d878" stop-opacity="0.75"/>
+        <stop offset="100%" stop-color="#8b6914" stop-opacity="0.5"/>
+      </linearGradient>
+      <filter id="zg-glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="1.2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ===== КОСМИЧЕСКИЙ ФОН — глубокая вселенная ===== -->
   <div class="cosmos" aria-hidden="true">
-    <div class="stars stars--far"></div>
-    <div class="stars stars--near"></div>
-    <div class="stars stars--dust"></div>
 
-    <div class="planet planet--1"></div>
-    <div class="planet planet--2"></div>
-    <div class="planet planet--3"></div>
-    <div class="planet planet--4"></div>
+    <div class="cosmos__void"></div>
 
-    <div class="zodiac-orbit">
-      <div class="zodiac-ring">
-        <span class="zodiac-sign">♈</span>
-        <span class="zodiac-sign">♉</span>
-        <span class="zodiac-sign">♊</span>
-        <span class="zodiac-sign">♋</span>
-        <span class="zodiac-sign">♌</span>
-        <span class="zodiac-sign">♍</span>
-        <span class="zodiac-sign">♎</span>
-        <span class="zodiac-sign">♏</span>
-        <span class="zodiac-sign">♐</span>
-        <span class="zodiac-sign">♑</span>
-        <span class="zodiac-sign">♒</span>
-        <span class="zodiac-sign">♓</span>
-      </div>
+    <div class="cosmos__nebulae">
+      <div class="nebula nebula--1"></div>
+      <div class="nebula nebula--2"></div>
+      <div class="nebula nebula--3"></div>
+      <div class="nebula nebula--4"></div>
+      <div class="nebula nebula--5"></div>
+      <div class="nebula nebula--6"></div>
     </div>
+
+    <div class="cosmos__mist"></div>
+
+    <div class="cosmos__gold-nebula" aria-hidden="true">
+      <div class="gold-nebula gold-nebula--1"></div>
+      <div class="gold-nebula gold-nebula--2"></div>
+      <div class="gold-nebula gold-nebula--3"></div>
+    </div>
+
+    <div class="cosmos__center-glow"></div>
+
+    <div class="mystic-circles" aria-hidden="true">
+      <div class="mystic-circle mystic-circle--1"></div>
+      <div class="mystic-circle mystic-circle--2"></div>
+      <div class="mystic-circle mystic-circle--3"></div>
+      <div class="mystic-circle mystic-circle--4"></div>
+      <div class="mystic-circle mystic-circle--5"></div>
+      <div class="mystic-circle mystic-circle--6"></div>
+      <div class="mystic-circle mystic-circle--7"></div>
+      <div class="mystic-circle mystic-circle--8"></div>
+      <div class="mystic-circle mystic-circle--9"></div>
+      <div class="mystic-circle mystic-circle--10"></div>
+    </div>
+
+    <div class="mystic-symbols" aria-hidden="true">
+      <svg class="mystic-symbols__svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gold-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(248,210,130,0.35)"/>
+            <stop offset="100%" stop-color="rgba(200,160,80,0.2)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Цветок жизни -->
+        <g class="mystic-sym mystic-sym--a" transform="translate(160,200)" opacity="0.06" fill="none" stroke="url(#gold-stroke)" stroke-width="0.7">
+          <circle cx="0" cy="0" r="42"/><circle cx="42" cy="0" r="42"/><circle cx="21" cy="36" r="42"/>
+          <circle cx="0" cy="0" r="84"/><path d="M-73 42 L73 42 M0 -73 L0 73"/>
+        </g>
+
+        <!-- Золотая спираль -->
+        <g class="mystic-sym mystic-sym--b" transform="translate(1680,160)" opacity="0.05" fill="none" stroke="rgba(248,210,130,0.3)" stroke-width="0.6">
+          <path d="M0,0 Q8,-8 16,0 Q24,8 32,0 Q40,-8 48,0 Q56,8 64,0"/>
+          <path d="M0,0 Q-6,6 0,12 Q6,18 0,24 Q-6,30 0,36 Q6,42 0,48"/>
+          <circle cx="0" cy="0" r="55" stroke-dasharray="4 8"/>
+        </g>
+
+        <!-- Гексаграмма -->
+        <g class="mystic-sym mystic-sym--c" transform="translate(200,760)" opacity="0.05" fill="none" stroke="rgba(180,150,255,0.35)" stroke-width="0.6">
+          <polygon points="0,-50 43.3,25 -43.3,25"/>
+          <polygon points="0,50 43.3,-25 -43.3,-25"/>
+          <circle cx="0" cy="0" r="52"/>
+        </g>
+
+        <!-- Древняя схема -->
+        <g class="mystic-sym mystic-sym--d" transform="translate(1700,800)" opacity="0.05" fill="none" stroke="rgba(248,210,130,0.3)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="58"/><circle cx="0" cy="0" r="38"/><circle cx="0" cy="0" r="18"/>
+          <line x1="-58" y1="0" x2="58" y2="0"/><line x1="0" y1="-58" x2="0" y2="58"/>
+          <line x1="-41" y1="-41" x2="41" y2="41"/><line x1="-41" y1="41" x2="41" y2="-41"/>
+        </g>
+
+        <!-- Мистические линии (левый край) -->
+        <g class="mystic-sym mystic-sym--e" transform="translate(100,95)" opacity="0.04" fill="none" stroke="rgba(160,140,220,0.3)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="32"/><circle cx="0" cy="0" r="65"/>
+          <path d="M0 -65 L0 65 M-56 -32 L56 32 M-56 32 L56 -32"/>
+        </g>
+
+        <!-- Пентаграмма (правый край) -->
+        <g class="mystic-sym mystic-sym--h" transform="translate(1780,480)" opacity="0.04" fill="none" stroke="rgba(248,210,130,0.28)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="40"/>
+          <path d="M0,-38 L9,-12 L36,-12 L14,4 L23,30 L0,16 L-23,30 L-14,4 L-36,-12 L-9,-12 Z"/>
+        </g>
+
+        <!-- Спираль Фибоначчи -->
+        <g class="mystic-sym mystic-sym--i" transform="translate(320,580)" opacity="0.04" fill="none" stroke="rgba(248,210,130,0.25)" stroke-width="0.5">
+          <rect x="0" y="0" width="34" height="34"/><rect x="34" y="0" width="34" height="34"/>
+          <rect x="0" y="34" width="68" height="68"/><path d="M34,34 A34,34 0 0,1 68,0 A68,68 0 0,1 0,102"/>
+        </g>
+
+        <!-- Нумерологическая сетка -->
+        <g class="mystic-sym mystic-sym--j" transform="translate(1480,320)" opacity="0.04" fill="none" stroke="rgba(180,150,255,0.25)" stroke-width="0.5">
+          <rect x="-45" y="-45" width="90" height="90" transform="rotate(45)"/>
+          <circle cx="0" cy="0" r="50"/><line x1="-50" y1="0" x2="50" y2="0"/><line x1="0" y1="-50" x2="0" y2="50"/>
+        </g>
+
+        <!-- Древние дуги (левый край) -->
+        <g class="mystic-sym mystic-sym--k" transform="translate(80,520)" opacity="0.035" fill="none" stroke="rgba(248,210,130,0.22)" stroke-width="0.5">
+          <path d="M-80,0 A80,80 0 0,1 80,0"/><path d="M-60,0 A60,60 0 0,0 60,0"/>
+          <path d="M-40,-20 A40,40 0 0,1 40,-20"/>
+        </g>
+
+        <!-- Треугольник + круг (правый нижний край) -->
+        <g class="mystic-sym mystic-sym--l" transform="translate(1840,960)" opacity="0.04" fill="none" stroke="rgba(160,140,220,0.28)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="42"/><path d="M-36 -21 L36 -21 L0 42 Z"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="cosmic-dust"></div>
+    <div class="cosmic-dust cosmic-dust--gold"></div>
+    <div class="cosmic-dust cosmic-dust--sparks"></div>
+
+    <!-- Мистические числа в глубине -->
+    <div class="cosmos__mystic-numbers" aria-hidden="true">
+      <span class="mystic-num mystic-num--d1">1</span>
+      <span class="mystic-num mystic-num--d2">3</span>
+      <span class="mystic-num mystic-num--d3">7</span>
+      <span class="mystic-num mystic-num--d1">9</span>
+      <span class="mystic-num mystic-num--d2">11</span>
+      <span class="mystic-num mystic-num--d3">22</span>
+      <span class="mystic-num mystic-num--d1">33</span>
+      <span class="mystic-num mystic-num--d2">108</span>
+    </div>
+
+    <!-- Сакральный декор по краям -->
+    <div class="cosmos__edge-decor" aria-hidden="true">
+      <svg class="edge-decor__svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <g class="edge-sym edge-sym--1" transform="translate(90,140)" opacity="0.045" fill="none" stroke="rgba(248,210,130,0.35)" stroke-width="0.6">
+          <circle cx="0" cy="0" r="70"/><circle cx="0" cy="0" r="45"/><circle cx="0" cy="0" r="20"/>
+          <line x1="-70" y1="0" x2="70" y2="0"/><line x1="0" y1="-70" x2="0" y2="70"/>
+        </g>
+        <g class="edge-sym edge-sym--2" transform="translate(1820,200)" opacity="0.04" fill="none" stroke="rgba(248,210,130,0.3)" stroke-width="0.5">
+          <polygon points="0,-60 52,30 -52,30"/><circle cx="0" cy="0" r="62"/>
+          <circle cx="0" cy="0" r="30" stroke-dasharray="3 6"/>
+        </g>
+        <g class="edge-sym edge-sym--3" transform="translate(60,540)" opacity="0.035" fill="none" stroke="rgba(180,150,255,0.28)" stroke-width="0.5">
+          <rect x="-50" y="-50" width="100" height="100" transform="rotate(45)"/>
+          <circle cx="0" cy="0" r="58"/><path d="M-50,-29 L50,-29 L0,50 Z"/>
+        </g>
+        <g class="edge-sym edge-sym--4" transform="translate(1860,620)" opacity="0.04" fill="none" stroke="rgba(248,210,130,0.28)" stroke-width="0.5">
+          <path d="M0,-55 L47.6,27.5 L-47.6,27.5 Z"/><circle cx="0" cy="0" r="55"/>
+          <line x1="-80" y1="0" x2="80" y2="0"/><line x1="0" y1="-80" x2="0" y2="80"/>
+        </g>
+        <g class="edge-sym edge-sym--5" transform="translate(140,920)" opacity="0.035" fill="none" stroke="rgba(248,210,130,0.25)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="50"/><path d="M-43,-25 L43,-25 L0,43 Z"/>
+          <path d="M-70,0 A70,70 0 0,1 70,0" stroke-dasharray="4 8"/>
+        </g>
+        <g class="edge-sym edge-sym--6" transform="translate(1780,900)" opacity="0.04" fill="none" stroke="rgba(160,140,220,0.3)" stroke-width="0.5">
+          <circle cx="0" cy="0" r="65"/><circle cx="0" cy="0" r="42"/>
+          <path d="M0,-65 L0 65 M-56,-32 L56 32 M-56 32 L56 -32"/>
+        </g>
+        <g class="edge-sym edge-sym--7" opacity="0.03" fill="none" stroke="rgba(248,210,130,0.22)" stroke-width="0.4">
+          <line x1="0" y1="120" x2="180" y2="280"/><line x1="0" y1="400" x2="120" y2="520"/>
+          <line x1="1920" y1="150" x2="1740" y2="310"/><line x1="1920" y1="750" x2="1800" y2="870"/>
+          <line x1="40" y1="1080" x2="200" y2="900"/><line x1="1880" y1="1080" x2="1720" y2="920"/>
+        </g>
+        <g class="edge-sym edge-sym--8" transform="translate(200,60)" opacity="0.035" fill="none" stroke="rgba(248,210,130,0.25)" stroke-width="0.5">
+          <path d="M0,0 Q20,-15 40,0 Q60,15 80,0"/><circle cx="0" cy="0" r="40" stroke-dasharray="2 5"/>
+        </g>
+        <g class="edge-sym edge-sym--9" transform="translate(1700,80)" opacity="0.03" fill="none" stroke="rgba(248,210,130,0.22)" stroke-width="0.5">
+          <path d="M0,0 Q-18,12 0,24 Q18,36 0,48"/><circle cx="0" cy="24" r="35"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stars stars--tiny"></div>
+    <div class="stars stars--mid"></div>
+    <div class="stars stars--bright"></div>
+
+    <div class="star-field" id="star-field"></div>
+
+    <canvas id="atmosphere-canvas" aria-hidden="true"></canvas>
+
+    <div class="light-rays"></div>
+    <div class="vignette"></div>
   </div>
 
-  <!-- ===== НАВИГАЦИЯ ===== -->
-  <nav class="nav" aria-label="Разделы сайта">
-    <a class="nav__link" href="#hero">Главная</a>
-    <a class="nav__link" href="#calculator">Расчёт</a>
-    <a class="nav__link" href="#compatibility">Совместимость</a>
-    <a class="nav__link" href="#numbers">Числа</a>
-    <a class="nav__link" href="#how-it-works">Как это работает</a>
+  <!-- ===== НАВИГАЦИЯ (по макету) ===== -->
+  <nav class="nav nav--mockup" aria-label="Разделы сайта">
+    <a class="nav__brand" href="#hero">
+      <svg class="nav__logo" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="url(#nav-gold)" stroke-width="1.2"/>
+        <path d="M20 6 L22 16 L32 18 L22 20 L20 30 L18 20 L8 18 L18 16 Z" fill="url(#nav-gold)" opacity="0.9"/>
+        <defs>
+          <linearGradient id="nav-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fff8d8"/><stop offset="100%" stop-color="#c9a227"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="nav__brand-text">
+        <span class="nav__brand-name">Тайна чисел</span>
+        <span class="nav__brand-sub">ваш виртуальный нумеролог</span>
+      </span>
+    </a>
+    <div class="nav__actions">
+      <a class="nav__link" href="#how-it-works">О проекте</a>
+      <div class="nav__utils">
+        <button class="nav__util" type="button" title="Тема" aria-label="Тема">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3a7 7 0 100 14 7 7 0 000-14z"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+        </button>
+        <button class="nav__util" type="button" title="Помощь" aria-label="Помощь">?</button>
+      </div>
+    </div>
   </nav>
+
+  <!-- Плавающие кнопки справа (по макету) -->
+  <aside class="float-dock" aria-label="Быстрые действия">
+    <a class="float-dock__btn" href="#daily-message" title="Послание дня">
+      <svg class="float-dock__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></svg>
+      <span class="float-dock__label">Послание дня</span>
+    </a>
+    <a class="float-dock__btn" href="#compatibility" title="Совместимость">
+      <svg class="float-dock__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 20.5c-4-3.5-7-6.5-7-10a4 4 0 017-2 4 4 0 017 2c0 3.5-3 6.5-7 10z"/></svg>
+      <span class="float-dock__label">Совместимость</span>
+    </a>
+    <button class="float-dock__btn" type="button" id="dock-financial" title="Финансовый потенциал">
+      <svg class="float-dock__svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M9.5 10a2.5 2.5 0 014.5 0 2.5 2.5 0 01-4.5 0 2.5 2.5 0 004.5 0"/></svg>
+      <span class="float-dock__label">Финансовый потенциал</span>
+    </button>
+  </aside>
 
   <main class="page">
 
-    <!-- ===== 1. ГЛАВНЫЙ ЭКРАН ===== -->
-    <header class="hero section" id="hero">
-      <p class="hero__badge">✦ онлайн-нумеролог ✦</p>
-      <h1 class="hero__title">Нумерологический проводник</h1>
-      <p class="hero__subtitle">
-        Узнайте свои числа по дате рождения, постройте личную карту
-        и проверьте совместимость с близким человеком
-      </p>
-      <a class="hero__cta" href="#calculator">Начать расчёт</a>
-    </header>
+    <!-- ===== ЭКРАН 1 — ОБЛОЖКА (только композиция) ===== -->
+    <header class="hero cover" id="hero">
 
-    <!-- ===== 2. РАСЧЁТ ПО ДАТЕ РОЖДЕНИЯ ===== -->
-    <section class="section" id="calculator">
-      <div class="section__header">
-        <h2 class="section__title">Расчёт по дате рождения</h2>
-        <p class="section__subtitle">
-          Введите дату — калькулятор рассчитает пять основных чисел
-        </p>
+      <div class="cover__portal">
+
+        <div class="cover__portal-galaxy" aria-hidden="true">
+          <svg class="portal-galaxy__svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="gal-core" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(255,235,200,0.14)"/>
+                <stop offset="35%" stop-color="rgba(180,140,220,0.06)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="500" cy="500" rx="300" ry="95" fill="url(#gal-core)" transform="rotate(-24 500 500)" opacity="0.7"/>
+            <g class="galaxy-arm galaxy-arm--1" fill="none" stroke-linecap="round" opacity="0.55">
+              <path d="M500,500 Q540,460 590,380 T680,220 T720,80" stroke="rgba(140,110,200,0.18)" stroke-width="2.2"/>
+              <path d="M500,500 Q460,540 410,620 T320,780 T280,920" stroke="rgba(248,210,130,0.14)" stroke-width="1.6"/>
+              <path d="M500,500 Q530,470 575,400 T650,250 T670,120" stroke="rgba(100,130,200,0.1)" stroke-width="1"/>
+            </g>
+            <g class="galaxy-arm galaxy-arm--2" fill="none" stroke-linecap="round" opacity="0.5" transform="rotate(120 500 500)">
+              <path d="M500,500 Q540,460 590,380 T680,220 T720,80" stroke="rgba(140,110,200,0.16)" stroke-width="2"/>
+              <path d="M500,500 Q460,540 410,620 T320,780 T280,920" stroke="rgba(248,210,130,0.12)" stroke-width="1.4"/>
+            </g>
+            <g class="galaxy-arm galaxy-arm--3" fill="none" stroke-linecap="round" opacity="0.45" transform="rotate(240 500 500)">
+              <path d="M500,500 Q540,460 590,380 T680,220 T720,80" stroke="rgba(120,100,180,0.14)" stroke-width="1.8"/>
+              <path d="M500,500 Q460,540 410,620 T320,780 T280,920" stroke="rgba(248,210,130,0.1)" stroke-width="1.2"/>
+            </g>
+            <circle cx="500" cy="500" r="45" fill="rgba(255,230,180,0.08)"/>
+            <circle cx="500" cy="500" r="18" fill="rgba(255,245,220,0.1)"/>
+          </svg>
+        </div>
+
+        <div class="cover__portal-dust" aria-hidden="true"></div>
+        <div class="cover__portal-radiance" aria-hidden="true"></div>
+
+        <!-- Декоративный магический круг -->
+        <div class="cover__magic" id="cover-magic" aria-hidden="true"></div>
+
+        <!-- 12 медальонов по орбите -->
+        <ul class="cover__zodiac" aria-label="Знаки зодиака">
+          <li class="cover__sign" style="--i:0"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/aries.png" alt="" aria-label="Овен"><span class="cover__sign-name">Овен</span></div></li>
+          <li class="cover__sign" style="--i:1"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/taurus.png" alt="" aria-label="Телец"><span class="cover__sign-name">Телец</span></div></li>
+          <li class="cover__sign" style="--i:2"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/gemini.png" alt="" aria-label="Близнецы"><span class="cover__sign-name">Близнецы</span></div></li>
+          <li class="cover__sign" style="--i:3"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/cancer.png" alt="" aria-label="Рак"><span class="cover__sign-name">Рак</span></div></li>
+          <li class="cover__sign" style="--i:4"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/leo.png" alt="" aria-label="Лев"><span class="cover__sign-name">Лев</span></div></li>
+          <li class="cover__sign" style="--i:5"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/virgo.png" alt="" aria-label="Дева"><span class="cover__sign-name">Дева</span></div></li>
+          <li class="cover__sign" style="--i:6"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/libra.png" alt="" aria-label="Весы"><span class="cover__sign-name">Весы</span></div></li>
+          <li class="cover__sign" style="--i:7"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/scorpio.png" alt="" aria-label="Скорпион"><span class="cover__sign-name">Скорпион</span></div></li>
+          <li class="cover__sign" style="--i:8"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/sagittarius.png" alt="" aria-label="Стрелец"><span class="cover__sign-name">Стрелец</span></div></li>
+          <li class="cover__sign" style="--i:9"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/capricorn.png" alt="" aria-label="Козерог"><span class="cover__sign-name">Козерог</span></div></li>
+          <li class="cover__sign" style="--i:10"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/aquarius.png" alt="" aria-label="Водолей"><span class="cover__sign-name">Водолей</span></div></li>
+          <li class="cover__sign" style="--i:11"><div class="cover__sign-pos"><img class="cover__medallion" src="assets/zodiac/pisces.png" alt="" aria-label="Рыбы"><span class="cover__sign-name">Рыбы</span></div></li>
+        </ul>
+
+        <!-- Центр портала -->
+        <div class="cover__center" id="hero-choice">
+          <h1 class="cover__title">Тайна чисел</h1>
+          <p class="cover__tagline">Ваш путь в мире чисел и звёзд</p>
+          <p class="cover__desc">Узнайте код своей судьбы и раскройте потенциал, который заложен в вас.</p>
+
+          <div class="analysis-cards" role="listbox" aria-label="Тип анализа">
+            <button class="analysis-card" type="button" data-analysis="quick" role="option">
+              <span class="analysis-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3l1.8 5.5L19 10l-5.2 1.5L12 17l-1.8-5.5L5 10l5.2-1.5L12 3z"/><circle cx="12" cy="12" r="9"/></svg>
+              </span>
+              <span class="analysis-card__title">⚡ Быстрый анализ</span>
+              <span class="analysis-card__desc">Краткий портрет<br>по дате рождения</span>
+            </button>
+            <button class="analysis-card" type="button" data-analysis="full" role="option">
+              <span class="analysis-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 14l2.5-3 2.5 2 3-4"/></svg>
+              </span>
+              <span class="analysis-card__title">🗺 Полная карта</span>
+              <span class="analysis-card__desc">Подробная<br>расшифровка чисел</span>
+            </button>
+            <button class="analysis-card" type="button" data-analysis="deep" role="option">
+              <span class="analysis-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/></svg>
+              </span>
+              <span class="analysis-card__title">✨ Глубокий анализ</span>
+              <span class="analysis-card__desc">Судьба, периоды<br>и родовые программы</span>
+            </button>
+          </div>
+
+          <button class="cover__cta form__button--calc" type="button" id="start-calc-btn" disabled>
+            Начать расчёт
+          </button>
+        </div>
+
       </div>
 
-      <div class="card">
-        <form class="form" id="birth-form" novalidate>
-          <label class="form__label" for="birth-date">Дата рождения</label>
-          <input
-            class="form__input"
-            type="date"
-            id="birth-date"
-            name="birth-date"
-            required
-            max=""
-          >
+    </header>
+
+    <!-- ===== ЭКРАН 2 — АНКЕТА (отдельный блок, не на обложке) ===== -->
+    <section class="section form-screen" id="hero-form" hidden>
+      <div class="form-screen__stage">
+        <div class="form-silhouette form-silhouette--female" aria-hidden="true">
+          <svg class="form-silhouette__svg" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sil-fem-glow" cx="40%" cy="30%" r="75%">
+                <stop offset="0%" stop-color="rgba(255,238,195,0.7)"/>
+                <stop offset="50%" stop-color="rgba(248,210,130,0.2)"/>
+                <stop offset="100%" stop-color="rgba(248,200,100,0)"/>
+              </radialGradient>
+              <filter id="sil-fem-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.8" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <g class="form-silhouette__figure" fill="url(#sil-fem-glow)" filter="url(#sil-fem-blur)" opacity="0.85">
+              <path d="M44,162 C40,150 42,134 46,120 C48,110 52,100 56,92 C60,84 64,78 68,74 C72,68 76,64 82,60 C88,54 96,50 106,48 C116,46 126,50 132,58 C138,68 140,80 138,94 C136,108 130,122 122,132 C116,138 108,144 100,148 C94,154 86,160 74,164 C60,168 48,166 44,162 Z"/>
+              <path d="M132,58 C142,52 154,60 160,76 C166,96 164,124 154,148 C144,168 126,178 106,176 C90,172 78,158 74,138 C70,116 78,94 94,76 C106,64 120,56 132,58 Z" opacity="0.72"/>
+            </g>
+            <g class="form-silhouette__dust">
+              <circle cx="72" cy="70" r="1.1" fill="rgba(255,245,215,0.7)"/>
+              <circle cx="108" cy="88" r="0.8" fill="rgba(255,240,200,0.6)"/>
+              <circle cx="92" cy="120" r="1" fill="rgba(248,220,160,0.55)"/>
+              <circle cx="118" cy="140" r="0.7" fill="rgba(255,245,220,0.5)"/>
+              <circle cx="58" cy="110" r="0.6" fill="rgba(248,210,130,0.45)"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="form-screen__inner card card--mystic">
+        <p class="hero__step-label" id="analysis-label"></p>
+        <h2 class="hero__form-title">Ваша анкета</h2>
+        <p class="hero__subtitle hero__subtitle--form">
+          Заполните данные — и откроется персональная нумерологическая карта
+        </p>
+
+        <form class="form form--hero" id="client-form" novalidate>
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label" for="first-name">Имя <span class="form__req">*</span></label>
+              <input class="form__input" type="text" id="first-name" name="firstName" required placeholder="Как к вам обращаться" autocomplete="given-name">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="last-name">Фамилия</label>
+              <input class="form__input" type="text" id="last-name" name="lastName" placeholder="Необязательно" autocomplete="family-name">
+            </div>
+          </div>
+
+          <label class="form__label" for="birth-date">Дата рождения <span class="form__req">*</span></label>
+          <input class="form__input" type="date" id="birth-date" name="birthDate" required max="">
+
+          <fieldset class="gender">
+            <legend class="form__label">Пол <span class="form__req">*</span></legend>
+            <div class="gender__grid">
+              <label class="gender__option">
+                <input type="radio" name="gender" value="female" checked>
+                <span class="gender__card">Женский</span>
+              </label>
+              <label class="gender__option">
+                <input type="radio" name="gender" value="male">
+                <span class="gender__card">Мужской</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="form__label" for="birth-city">Город рождения</label>
+          <input class="form__input" type="text" id="birth-city" name="birthCity" placeholder="Необязательно" autocomplete="address-level2">
+
           <p class="form__hint" id="form-hint" role="alert" hidden></p>
-          <button class="form__button" type="submit">Рассчитать</button>
+          <button class="form__button form__button--hero" type="submit">
+            <span>Начать расчёт</span>
+          </button>
+          <button class="form__button form__button--back" type="button" id="back-to-choice">
+            ← Вернуться на главную
+          </button>
+        </form>
+        </div>
+
+        <div class="form-silhouette form-silhouette--male" aria-hidden="true">
+          <svg class="form-silhouette__svg" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sil-male-glow" cx="60%" cy="28%" r="72%">
+                <stop offset="0%" stop-color="rgba(255,232,180,0.65)"/>
+                <stop offset="50%" stop-color="rgba(248,205,120,0.18)"/>
+                <stop offset="100%" stop-color="rgba(248,200,100,0)"/>
+              </radialGradient>
+              <filter id="sil-male-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.8" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <g class="form-silhouette__figure" fill="url(#sil-male-glow)" filter="url(#sil-male-blur)" opacity="0.85">
+              <path d="M136,162 C140,150 138,132 134,116 C132,104 128,94 124,86 C120,78 116,72 112,68 C108,62 102,58 96,54 C88,48 78,46 68,48 C58,50 50,56 46,66 C42,76 42,90 46,104 C50,118 58,130 68,138 C76,144 86,150 98,154 C110,158 124,158 136,162 Z"/>
+              <path d="M68,48 C56,44 44,52 38,66 C32,82 34,106 44,128 C54,148 72,160 92,158 C108,154 120,140 124,120 C128,98 120,74 104,60 C92,50 80,46 68,48 Z" opacity="0.68"/>
+            </g>
+            <g class="form-silhouette__dust">
+              <circle cx="108" cy="72" r="1" fill="rgba(255,245,215,0.65)"/>
+              <circle cx="72" cy="86" r="0.8" fill="rgba(255,240,200,0.55)"/>
+              <circle cx="88" cy="118" r="1.1" fill="rgba(248,220,160,0.5)"/>
+              <circle cx="62" cy="138" r="0.7" fill="rgba(255,245,220,0.45)"/>
+              <circle cx="122" cy="108" r="0.6" fill="rgba(248,210,130,0.4)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== РАЗДЕЛЫ — самостоятельные анкеты ===== -->
+    <section class="section app-section section--quick" id="quick-analysis" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Быстрый анализ</h2>
+        <p class="section__subtitle">Краткий портрет по дате рождения</p>
+      </div>
+      <article class="card card--mystic quick-analysis__card">
+        <header class="quick-analysis__head">
+          <h3 class="quick-analysis__title">Быстрый анализ</h3>
+          <p class="quick-analysis__lead">Укажите дату рождения — и вы получите краткий нумерологический портрет.</p>
+        </header>
+        <form class="form quick-analysis__form" id="quick-analysis-form" novalidate>
+          <label class="form__label" for="quick-analysis-birth-date">Дата рождения <span class="form__req">*</span></label>
+          <input class="form__input quick-analysis__input" type="date" id="quick-analysis-birth-date" name="birthDate" required max="">
+          <p class="form__hint quick-analysis__hint" id="quick-analysis-hint" role="alert" hidden></p>
+          <button class="form__button form__button--hero quick-analysis__submit" type="submit">Получить быстрый анализ</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="section app-section section--full" id="full-analysis" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Полная карта</h2>
+        <p class="section__subtitle">Подробная расшифровка ваших чисел</p>
+      </div>
+      <article class="card card--mystic full-analysis__card">
+        <header class="full-analysis__head">
+          <h3 class="full-analysis__title">Полная карта</h3>
+          <p class="full-analysis__lead">Заполните анкету для подробной нумерологической карты.</p>
+        </header>
+        <form class="form full-analysis__form" id="full-analysis-form" novalidate>
+          <label class="form__label" for="full-analysis-first-name">Имя <span class="form__req">*</span></label>
+          <input class="form__input full-analysis__input" type="text" id="full-analysis-first-name" name="firstName" required placeholder="Как к вам обращаться" autocomplete="given-name">
+          <label class="form__label" for="full-analysis-birth-date">Дата рождения <span class="form__req">*</span></label>
+          <input class="form__input full-analysis__input" type="date" id="full-analysis-birth-date" name="birthDate" required max="">
+          <fieldset class="gender full-analysis__gender">
+            <legend class="form__label">Пол <span class="form__req">*</span></legend>
+            <div class="gender__grid">
+              <label class="gender__option">
+                <input type="radio" name="full-analysis-gender" value="female" checked>
+                <span class="gender__card">Женский</span>
+              </label>
+              <label class="gender__option">
+                <input type="radio" name="full-analysis-gender" value="male">
+                <span class="gender__card">Мужской</span>
+              </label>
+            </div>
+          </fieldset>
+          <p class="form__hint full-analysis__hint" id="full-analysis-hint" role="alert" hidden></p>
+          <button class="form__button form__button--hero full-analysis__submit" type="submit">Построить полную карту</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="section app-section section--deep" id="deep-analysis" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Глубокий анализ</h2>
+        <p class="section__subtitle">Судьба, периоды жизни и родовые программы</p>
+      </div>
+      <article class="card card--mystic deep-analysis__card">
+        <header class="deep-analysis__head">
+          <h3 class="deep-analysis__title">Глубокий анализ</h3>
+          <p class="deep-analysis__lead">Расширенная анкета для глубокой нумерологической консультации.</p>
+        </header>
+        <form class="form deep-analysis__form" id="deep-analysis-form" novalidate>
+          <label class="form__label" for="deep-analysis-birth-date">Дата рождения <span class="form__req">*</span></label>
+          <input class="form__input deep-analysis__input" type="date" id="deep-analysis-birth-date" name="birthDate" required max="">
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label" for="deep-analysis-first-name">Имя <span class="form__req">*</span></label>
+              <input class="form__input deep-analysis__input" type="text" id="deep-analysis-first-name" name="firstName" required placeholder="Как к вам обращаться" autocomplete="given-name">
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="deep-analysis-last-name">Фамилия</label>
+              <input class="form__input deep-analysis__input" type="text" id="deep-analysis-last-name" name="lastName" placeholder="Необязательно" autocomplete="family-name">
+            </div>
+          </div>
+          <fieldset class="gender deep-analysis__gender">
+            <legend class="form__label">Пол <span class="form__req">*</span></legend>
+            <div class="gender__grid">
+              <label class="gender__option">
+                <input type="radio" name="deep-analysis-gender" value="female" checked>
+                <span class="gender__card">Женский</span>
+              </label>
+              <label class="gender__option">
+                <input type="radio" name="deep-analysis-gender" value="male">
+                <span class="gender__card">Мужской</span>
+              </label>
+            </div>
+          </fieldset>
+          <label class="form__label" for="deep-analysis-city">Город, в котором живёте</label>
+          <input class="form__input deep-analysis__input" type="text" id="deep-analysis-city" name="city" placeholder="Ваш текущий город" autocomplete="address-level2">
+          <p class="form__hint deep-analysis__hint" id="deep-analysis-hint" role="alert" hidden></p>
+          <button class="form__button form__button--hero deep-analysis__submit" type="submit">Начать глубокий анализ</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="section app-section section--daily" id="daily-message" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Послание дня</h2>
+        <p class="section__subtitle">Выберите знак зодиака и число — узнайте, что ждёт вас сегодня</p>
+      </div>
+      <div class="daily-message__shell">
+        <div class="daily-message__step" id="daily-message-step-signs">
+          <p class="daily-message__lead">Выберите свой знак зодиака</p>
+          <ul class="daily-message__zodiac" id="daily-message-zodiac" aria-label="Знаки зодиака"></ul>
+        </div>
+        <div class="daily-message__step" id="daily-message-step-number" hidden>
+          <button class="daily-message__back" type="button" id="daily-message-back-signs">← Другой знак</button>
+          <p class="daily-message__picked" id="daily-message-picked-sign"></p>
+          <p class="daily-message__lead">Выберите число дня</p>
+          <div class="daily-message__numbers" id="daily-message-numbers" aria-label="Числа дня"></div>
+        </div>
+        <article class="card card--mystic daily-message__result" id="daily-message-result" hidden>
+          <div class="daily-message__result-head">
+            <img class="daily-message__result-icon" id="daily-message-result-icon" src="" alt="" width="56" height="56">
+            <div>
+              <h3 class="daily-message__result-title" id="daily-message-result-title"></h3>
+              <p class="daily-message__result-date" id="daily-message-result-date"></p>
+            </div>
+          </div>
+          <p class="daily-message__result-mood" id="daily-message-result-mood"></p>
+          <blockquote class="daily-message__result-text" id="daily-message-result-text"></blockquote>
+          <p class="daily-message__result-do" id="daily-message-result-do"></p>
+          <button class="form__button form__button--back daily-message__restart" type="button" id="daily-message-restart">Выбрать другой знак</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="section app-section section--compatibility" id="compatibility" hidden>
+      <div class="section__header">
+        <h2 class="section__title">Совместимость</h2>
+        <p class="section__subtitle">Гармония энергий двух людей по датам рождения</p>
+      </div>
+      <div class="compatibility__shell">
+        <form class="compatibility__form" id="compatibility-form" novalidate>
+          <div class="compatibility__cards">
+            <article class="card card--mystic compatibility__card compatibility__card--first">
+              <h3 class="compatibility__card-title">Первый человек</h3>
+              <label class="form__label" for="compatibility-p1-name">Имя <span class="form__req">*</span></label>
+              <input class="form__input compatibility__input" type="text" id="compatibility-p1-name" name="person1Name" required placeholder="Ваше имя" autocomplete="given-name">
+              <label class="form__label" for="compatibility-p1-date">Дата рождения <span class="form__req">*</span></label>
+              <input class="form__input compatibility__input" type="date" id="compatibility-p1-date" name="person1BirthDate" required max="">
+              <fieldset class="gender compatibility__gender">
+                <legend class="form__label">Пол <span class="form__req">*</span></legend>
+                <div class="gender__grid">
+                  <label class="gender__option">
+                    <input type="radio" name="compatibility-p1-gender" value="female" checked>
+                    <span class="gender__card">Женский</span>
+                  </label>
+                  <label class="gender__option">
+                    <input type="radio" name="compatibility-p1-gender" value="male">
+                    <span class="gender__card">Мужской</span>
+                  </label>
+                </div>
+              </fieldset>
+            </article>
+            <article class="card card--mystic compatibility__card compatibility__card--second">
+              <h3 class="compatibility__card-title">Второй человек</h3>
+              <label class="form__label" for="compatibility-p2-name">Имя <span class="form__req">*</span></label>
+              <input class="form__input compatibility__input" type="text" id="compatibility-p2-name" name="person2Name" required placeholder="Имя партнёра">
+              <label class="form__label" for="compatibility-p2-date">Дата рождения <span class="form__req">*</span></label>
+              <input class="form__input compatibility__input" type="date" id="compatibility-p2-date" name="person2BirthDate" required max="">
+              <fieldset class="gender compatibility__gender">
+                <legend class="form__label">Пол <span class="form__req">*</span></legend>
+                <div class="gender__grid">
+                  <label class="gender__option">
+                    <input type="radio" name="compatibility-p2-gender" value="female" checked>
+                    <span class="gender__card">Женский</span>
+                  </label>
+                  <label class="gender__option">
+                    <input type="radio" name="compatibility-p2-gender" value="male">
+                    <span class="gender__card">Мужской</span>
+                  </label>
+                </div>
+              </fieldset>
+            </article>
+          </div>
+          <p class="form__hint compatibility__hint" id="compatibility-hint" role="alert" hidden></p>
+          <button class="form__button form__button--hero compatibility__submit" type="submit">Рассчитать совместимость</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+          <div class="compat-result compatibility__result" id="compatibility-result" hidden>
+            <div class="compat-result__header">
+              <div class="compat-person">
+                <span class="compat-person__number" id="compatibility-result-num-1">—</span>
+                <span class="compat-person__label" id="compatibility-result-label-1"></span>
+              </div>
+              <div class="compat-percent">
+                <div class="compat-percent__circle" id="compatibility-result-circle">
+                  <span class="compat-percent__value" id="compatibility-result-percent">0%</span>
+                </div>
+                <span class="compat-percent__level" id="compatibility-result-level"></span>
+              </div>
+              <div class="compat-person">
+                <span class="compat-person__number" id="compatibility-result-num-2">—</span>
+                <span class="compat-person__label" id="compatibility-result-label-2"></span>
+              </div>
+            </div>
+            <div class="compat-details">
+              <div class="compat-details__block compat-details__block--plus">
+                <h4 class="compat-details__heading">Сильные стороны пары</h4>
+                <p id="compatibility-result-strengths"></p>
+              </div>
+              <div class="compat-details__block compat-details__block--minus">
+                <h4 class="compat-details__heading">Возможные сложности</h4>
+                <p id="compatibility-result-challenges"></p>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </section>
 
-    <!-- ===== 3. ЛИЧНАЯ НУМЕРОЛОГИЧЕСКАЯ КАРТА ===== -->
-    <section class="section" id="personal-card" hidden>
+    <section class="section app-section section--finance" id="finance" hidden>
       <div class="section__header">
-        <h2 class="section__title">Ваша нумерологическая карта</h2>
-        <p class="section__subtitle" id="card-date-label"></p>
+        <h2 class="section__title">Финансовый потенциал</h2>
+        <p class="section__subtitle">Числовой код ваших денежных возможностей</p>
       </div>
+      <article class="card card--mystic finance__card">
+        <header class="finance__head">
+          <h3 class="finance__title">Финансовый потенциал</h3>
+          <p class="finance__lead">Укажите имя, дату рождения и пол для расчёта денежной энергии.</p>
+        </header>
+        <form class="form finance__form" id="finance-form" novalidate>
+          <label class="form__label" for="finance-first-name">Имя <span class="form__req">*</span></label>
+          <input class="form__input finance__input" type="text" id="finance-first-name" name="firstName" required placeholder="Как к вам обращаться" autocomplete="given-name">
+          <label class="form__label" for="finance-birth-date">Дата рождения <span class="form__req">*</span></label>
+          <input class="form__input finance__input" type="date" id="finance-birth-date" name="birthDate" required max="">
+          <fieldset class="gender finance__gender">
+            <legend class="form__label">Пол <span class="form__req">*</span></legend>
+            <div class="gender__grid">
+              <label class="gender__option">
+                <input type="radio" name="finance-gender" value="female" checked>
+                <span class="gender__card">Женский</span>
+              </label>
+              <label class="gender__option">
+                <input type="radio" name="finance-gender" value="male">
+                <span class="gender__card">Мужской</span>
+              </label>
+            </div>
+          </fieldset>
+          <p class="form__hint finance__hint" id="finance-hint" role="alert" hidden></p>
+          <button class="form__button form__button--hero finance__submit" type="submit">Узнать финансовый потенциал</button>
+          <button class="form__button form__button--back" type="button" data-back-hero>← На главную</button>
+        </form>
+      </article>
+    </section>
 
-      <div class="card card--profile">
-        <!-- Главное число — жизненный путь -->
-        <div class="profile-hero">
-          <p class="profile-hero__label">Число жизненного пути</p>
-          <div class="profile-hero__number" id="card-life-path">—</div>
-          <h3 class="profile-hero__title" id="card-life-path-title"></h3>
-          <p class="profile-hero__text" id="card-life-path-desc"></p>
-        </div>
-
-        <!-- Сетка остальных чисел -->
-        <div class="profile-grid" id="profile-grid">
-          <!-- Заполняется из JavaScript -->
-        </div>
-
-        <div class="profile-tip">
-          <span class="profile-tip__label">Подсказка дня</span>
-          <p class="profile-tip__text" id="card-tip"></p>
-        </div>
-
-        <button class="form__button form__button--ghost" type="button" id="reset-button">
-          Новый расчёт
-        </button>
+    <!-- ===== ПОСЛАНИЕ ДНЯ (прежняя версия — сохранена) ===== -->
+    <section class="section" id="message-day" hidden>
+      <div class="message-day card card--mystic">
+        <div class="message-day__icon" aria-hidden="true">☽</div>
+        <h2 class="message-day__title">Послание дня</h2>
+        <p class="message-day__date" id="message-day-date"></p>
+        <blockquote class="message-day__text" id="message-day-text"></blockquote>
+        <div class="message-day__glow" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- ===== 4. СОВМЕСТИМОСТЬ ===== -->
-    <section class="section" id="compatibility">
+    <!-- ===== НУМЕРОЛОГИЧЕСКАЯ КАРТА ===== -->
+    <section class="section" id="personal-card" hidden>
+      <div class="section__header">
+        <h2 class="section__title" id="card-title">Нумерологическая карта</h2>
+        <p class="section__subtitle" id="card-date-label"></p>
+      </div>
+
+      <div class="card card--profile card--mystic" id="profile-card">
+        <nav class="consult__nav-wrap" id="consult-nav" aria-label="Разделы карты"></nav>
+
+        <div class="consult" id="consult-content" aria-live="polite"></div>
+
+        <div class="consult__ancestral-trigger">
+          <button class="form__button form__button--ancestral" type="button" id="ancestral-button">
+            Открыть родовую программу
+          </button>
+        </div>
+
+        <div class="consult__ancestral" id="ancestral-section" hidden>
+          <div id="ancestral-content"></div>
+        </div>
+
+        <div class="profile-actions">
+          <button class="form__button" type="button" id="copy-button">
+            Скопировать карту
+          </button>
+          <button class="form__button form__button--ghost" type="button" id="reset-button">
+            Новая анкета
+          </button>
+        </div>
+        <p class="copy-toast" id="copy-toast" hidden>Карта скопирована ✦</p>
+      </div>
+    </section>
+
+    <!-- ===== СОВМЕСТИМОСТЬ (прежняя версия — сохранена) ===== -->
+    <section class="section" id="compatibility-legacy" hidden>
       <div class="section__header">
         <h2 class="section__title">Совместимость</h2>
         <p class="section__subtitle">
-          Введите две даты рождения и узнайте, насколько гармоничны ваши энергии
+          Две даты рождения — и вы узнаете гармонию ваших энергий
         </p>
       </div>
 
-      <div class="card">
+      <div class="card card--mystic">
         <form class="form" id="compat-form" novalidate>
           <div class="form__row">
             <div class="form__group">
-              <label class="form__label" for="compat-date-1">Дата первого человека</label>
+              <label class="form__label" for="compat-date-1">Первая дата</label>
               <input class="form__input" type="date" id="compat-date-1" required max="">
             </div>
             <div class="form__group">
-              <label class="form__label" for="compat-date-2">Дата второго человека</label>
+              <label class="form__label" for="compat-date-2">Вторая дата</label>
               <input class="form__input" type="date" id="compat-date-2" required max="">
             </div>
           </div>
@@ -142,7 +788,6 @@
           <button class="form__button" type="submit">Проверить совместимость</button>
         </form>
 
-        <!-- Результат совместимости -->
         <div class="compat-result" id="compat-result" hidden>
           <div class="compat-result__header">
             <div class="compat-person">
@@ -160,7 +805,6 @@
               <span class="compat-person__label" id="compat-label-2"></span>
             </div>
           </div>
-
           <div class="compat-details">
             <div class="compat-details__block compat-details__block--plus">
               <h4 class="compat-details__heading">Сильные стороны пары</h4>
@@ -175,67 +819,56 @@
       </div>
     </section>
 
-    <!-- ===== 5. ОПИСАНИЕ ЧИСЕЛ ===== -->
+    <!-- ===== 5. СПРАВОЧНИК ЧИСЕЛ ===== -->
     <section class="section" id="numbers">
       <div class="section__header">
         <h2 class="section__title">Значение чисел</h2>
-        <p class="section__subtitle">
-          Справочник чисел от 1 до 9 и мастер-чисел 11, 22, 33
-        </p>
+        <p class="section__subtitle">Справочник чисел от 1 до 9 и мастер-чисел 11, 22, 33</p>
       </div>
-
-      <div class="numbers-grid" id="numbers-grid">
-        <!-- Карточки чисел заполняются из JavaScript -->
-      </div>
+      <div class="numbers-grid" id="numbers-grid"></div>
     </section>
 
     <!-- ===== 6. КАК ЭТО РАБОТАЕТ ===== -->
     <section class="section" id="how-it-works">
       <div class="section__header">
         <h2 class="section__title">Как это работает</h2>
-        <p class="section__subtitle">Простая логика за космическим фасадом</p>
+        <p class="section__subtitle">Простая магия чисел за звёздным небом</p>
       </div>
-
-      <div class="card">
+      <div class="card card--mystic">
         <ol class="steps">
           <li class="steps__item">
             <span class="steps__number">1</span>
             <div>
-              <h3 class="steps__title">Введите дату рождения</h3>
-              <p class="steps__text">
-                Калькулятор берёт день, месяц и год и складывает их цифры
-                по разным формулам для каждого числа.
-              </p>
+              <h3 class="steps__title">Выберите тип анализа</h3>
+              <p class="steps__text">Быстрый портрет, полная карта или глубокий разбор — на ваш выбор.</p>
             </div>
           </li>
           <li class="steps__item">
             <span class="steps__number">2</span>
             <div>
-              <h3 class="steps__title">Получите личную карту</h3>
-              <p class="steps__text">
-                Вы увидите пять чисел: жизненного пути, души, судьбы, личности
-                и дня рождения — с короткими описаниями.
-              </p>
+              <h3 class="steps__title">Заполните анкету</h3>
+              <p class="steps__text">Имя, дата рождения и пол — основа вашей персональной карты.</p>
             </div>
           </li>
           <li class="steps__item">
             <span class="steps__number">3</span>
             <div>
-              <h3 class="steps__title">Мастер-числа 11, 22, 33</h3>
-              <p class="steps__text">
-                Если при сложении получается 11, 22 или 33 — мы не сокращаем
-                их дальше. Это особые числа с усиленной энергией.
-              </p>
+              <h3 class="steps__title">Получите карту</h3>
+              <p class="steps__text">Портрет, периоды жизни, прогноз, любовь, деньги и предназначение.</p>
             </div>
           </li>
           <li class="steps__item">
             <span class="steps__number">4</span>
             <div>
-              <h3 class="steps__title">Проверьте совместимость</h3>
-              <p class="steps__text">
-                Сравниваем числа жизненного пути двух людей и показываем
-                процент гармонии, сильные стороны и возможные сложности.
-              </p>
+              <h3 class="steps__title">Родовая программа</h3>
+              <p class="steps__text">Отдельный блок о родовой энергии — открывается по кнопке «Открыть родовую программу».</p>
+            </div>
+          </li>
+          <li class="steps__item">
+            <span class="steps__number">5</span>
+            <div>
+              <h3 class="steps__title">Совместимость</h3>
+              <p class="steps__text">Сравните две даты рождения и узнайте гармонию энергий пары.</p>
             </div>
           </li>
         </ol>
@@ -244,14 +877,24 @@
 
   </main>
 
-  <footer class="footer">
-    <p>Нумерологический проводник · онлайн-калькулятор для самопознания</p>
-  </footer>
-
   <!-- Данные → логика → интерфейс -->
   <script src="js/data/numberDescriptions.js"></script>
+  <script src="js/data/audienceTexts.js"></script>
+  <script src="js/data/zodiacDailyData.js"></script>
+  <script src="js/data/dailyData.js"></script>
+  <script src="js/data/readingTexts.js"></script>
+  <script src="js/data/consultationTexts.js"></script>
   <script src="js/data/compatibilityData.js"></script>
   <script src="js/numerology.js"></script>
+  <script src="js/consultation.js"></script>
+  <script src="js/renderConsultation.js"></script>
+  <script src="js/magicCircle.js"></script>
+  <script src="js/cosmos.js"></script>
+  <script src="js/atmosphere.js"></script>
+  <script src="js/sectionAtmosphere.js"></script>
+  <script src="js/sections.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/sectionForms.js"></script>
+  <script src="js/dailyMessage.js"></script>
 </body>
 </html>
